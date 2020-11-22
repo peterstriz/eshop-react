@@ -74,10 +74,30 @@ app.get('/produkty', (req, res) => {
         if (error) throw error;
         res.json(results);
     });
-
-
-
 });
+
+
+app.get('/existuje', (req, res) => {
+
+    console.log("requested pouzivatel");
+    console.log(req.query);
+
+
+    res.header({ "Access-Control-Allow-Origin": "*" });
+
+    var query = 'SELECT EXISTS(SELECT * FROM zakaznik WHERE meno = \'' + req.query.meno + '\') AS existuje';
+
+    connection.query(query, function (error, results, fields) {
+        if (error) throw error;
+        console.log('query..');
+        console.log(results);
+        results = { 'existuje': results[0].existuje == 0 ? false : true };
+        res.json(results);
+    });
+});
+
+
+
 
 
 app.listen(8081, () => {

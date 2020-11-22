@@ -1,13 +1,9 @@
 .produkt {
   margin: 3px;
-  /* border: black; */
-  /* border-width: 2px; */
-  /* border-style: solid; */
   border-radius: 3px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* font-size: ; */
   background-color: rgb(255, 255, 255);
 }
 
@@ -25,6 +21,39 @@
   flex-wrap: wrap; 
   max-width: 500px;
 }
+
+.osobneUdaje{
+  background-color: rgb(255, 255, 255);
+  border-radius: 3px;
+  margin: 3px;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  margin-left: 20px;
+  margin-top: 30px;
+}
+
+.label-input{
+  margin: 5px;
+  display: flex;
+  flex-direction: column;
+}
+
+.vytvor-objednavku {
+  background-color: rgb(133, 199, 149);
+  border-width: 0px;
+  border-radius: 3px;
+  height: 30px;
+  font-size: large;
+  font-weight: bold;
+
+  margin: 3px;
+}
+
+.vytvor-objednavku:hover{
+  background-color: rgb(121, 158, 131);
+}
+
 
 .kosik{
   display: flex;
@@ -48,7 +77,6 @@
 
 .cena-produktu{
   padding: 0px 10px 0px 10px ;
-  color: rgb(58, 17, 17);
 }
 
 .kosik{
@@ -65,3 +93,4 @@
 div {
   font-weight: 500;
 }
+
