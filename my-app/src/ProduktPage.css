@@ -1,0 +1,44 @@
+.produkt {
+  margin: 3px;
+  /* border: black; */
+  /* border-width: 2px; */
+  /* border-style: solid; */
+  border-radius: 3px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* font-size: ; */
+  background-color: rgb(255, 255, 255);
+}
+
+.produkt-img{
+  margin: 3px;
+}
+
+.produkty {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  flex-wrap: wrap; 
+  max-width: 1000px;
+}
+
+.pridanie-produktu {
+  display: flex;
+  align-items: center;
+}
+
+.tlacitko-kosik {
+  border: none;
+  border-radius: 3px;
+  /* padding: 5px; */
+  background-color: rgb(127, 243, 82);
+}
+
+.pocet-kosik{
+  padding: 5px;
+}
+
+.cena-produktu{
+  color: rgb(58, 17, 17);
+}
