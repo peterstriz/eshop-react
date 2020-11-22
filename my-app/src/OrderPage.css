@@ -1,0 +1,67 @@
+.produkt {
+  margin: 3px;
+  /* border: black; */
+  /* border-width: 2px; */
+  /* border-style: solid; */
+  border-radius: 3px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* font-size: ; */
+  background-color: rgb(255, 255, 255);
+}
+
+.produkt-img{
+  margin: 3px;
+}
+
+.kosikProdukt {
+  background-color: rgb(255, 255, 255);
+  border-radius: 3px;
+  margin: 3px;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  flex-wrap: wrap; 
+  max-width: 500px;
+}
+
+.kosik{
+  display: flex;
+  flex-direction: column;
+  padding-left: 20px;
+}
+
+.pridanie-produktu {
+  display: flex;
+  align-items: center;
+}
+
+.nazov-produktu{
+  flex-grow: 1; 
+}
+
+.pocet-produktu{
+  padding: 5px;
+
+}
+
+.cena-produktu{
+  padding: 0px 10px 0px 10px ;
+  color: rgb(58, 17, 17);
+}
+
+.kosik{
+  max-width: 500px;
+}
+
+.suma{
+  align-self: flex-end;
+  padding: 0px 10px 0px 10px ;
+  font-weight: bold;
+}
+
+
+div {
+  font-weight: 500;
+}

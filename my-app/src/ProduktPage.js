@@ -1,14 +1,12 @@
 import './ProduktPage.css';
 
-import React, { useReducer, useState } from 'react';
+import React, { useReducer } from 'react';
 
 import Produkty from './Produkty';
 
 
 function ProduktPage(props) {
-
-    const [kosik, setKosik] = useReducer(kosikReducer, []);
-
+    const [kosik, nastavKosik] = useReducer(kosikReducer, []);
 
     function kosikReducer(state, action) {
         switch (action.type) {
@@ -24,22 +22,21 @@ function ProduktPage(props) {
     }
 
     function pridajDoKosika(produkt) {
-        setKosik({ produkt, type: 'add' });
+        nastavKosik({ produkt, type: 'add' });
     }
 
     function odoberZKosika(produkt) {
-        setKosik({ produkt, type: 'remove' });
+        nastavKosik({ produkt, type: 'remove' });
     }
-
 
     return (
         <React.StrictMode>
-            <button> Kúpiť </button>
+            <button onClick={() => props.zmenScenu('orderPage', { kosik: kosik })}> Kúpiť </button>
             <Produkty
                 pridajDoKosika={function (produkt) { pridajDoKosika(produkt) }}
                 odoberZKosika={function (produkt) { odoberZKosika(produkt) }}
             />
-        </React.StrictMode>
+        </React.StrictMode >
     )
 }
 

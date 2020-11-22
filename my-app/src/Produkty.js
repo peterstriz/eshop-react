@@ -2,7 +2,7 @@ import './ProduktPage.css';
 import Produkt from './Produkt';
 import axios from 'axios';
 
-import React, { useState, useEffect, useReducer } from 'react';
+import React, { useState, useEffect } from 'react';
 
 function Produkty(props) {
   const [produkty, setProdukty] = useState([]);
