@@ -104,6 +104,37 @@ app.get('/produkty', (req, res) => {
     });
 });
 
+app.get('/reklamy', (req, res) => {
+    res.header({ "Access-Control-Allow-Origin": "*" });
+
+    console.log("requested reklamy");
+
+    var query = 'SELECT * FROM `reklama`;'
+
+    connection.query(query, function (error, results, fields) {
+        if (error) throw error;
+        res.json(results);
+    });
+});
+
+app.get('/objednavky', (req, res) => {
+    res.header({ "Access-Control-Allow-Origin": "*" });
+
+    console.log("requested objednavky");
+
+    var query = 'SELECT objednavka.id, zakaznik.meno, zakaznik.ulica, zakaznik.cislo, zakaznik.mesto, zakaznik.psc, kosik.pocet_produktov, ROUND((kosik.pocet_produktov*produkt.cena), 2) AS suma, produkt.nazov, produkt.obrazok, produkt.cena, objednavka.stav FROM objednavka'
+        + ' INNER JOIN zakaznik ON objednavka.zakaznik_id=zakaznik.id'
+        + ' INNER JOIN kosik ON kosik.objednavka_id=objednavka.id'
+        + ' INNER JOIN produkt ON kosik.produkt_id=produkt.id'
+        + ' ORDER BY objednavka.id;'
+
+
+    connection.query(query, function (error, results, fields) {
+        if (error) throw error;
+        res.json(results);
+    });
+});
+
 
 app.get('/pocitadlo', (req, res) => {
     res.header({ "Access-Control-Allow-Origin": "*" });
@@ -178,7 +209,7 @@ app.get('/objednavka', (req, res) => {
 
             console.log('vytvoreny zakaznik');
 
-            sql = 'INSERT INTO objednavka (zakaznik_id) VALUES (\'' + zakaznik_id + '\'); ';
+            sql = 'INSERT INTO objednavka (zakaznik_id, stav) VALUES (\'' + zakaznik_id + '\', \'vytvorena\'); ';
             connection.query(sql, function (err, result) {
                 if (err) {
                     res.json({ fail: err });

@@ -45,7 +45,7 @@ class OrderPage extends React.Component {
             alert('Vyplňte meno.');
             return;
         }
-        /*if (this.state.ulica.length === 0) {
+        if (this.state.ulica.length === 0) {
             alert('Vyplňte ulicu.');
             return;
         }
@@ -60,7 +60,18 @@ class OrderPage extends React.Component {
         if (this.state.psc.length === 0) {
             alert('Vyplňte PSČ.');
             return;
-        }*/
+        }
+
+        if (!/^\d+$/.test(this.state.cisloDomu)) {
+            alert('Číslo domu musí byť číslo.');
+            return;
+        }
+        if (!/^\d+$/.test(this.state.psc)) {
+            alert('PSČ musí byť číslo.');
+            return;
+        }
+
+
 
         // ak sa pouziva meno niekym inym
         axios.get('http://localhost:8081/existuje', {
@@ -117,7 +128,7 @@ class OrderPage extends React.Component {
     render() {
         return (
             <React.StrictMode>
-                <button className="naspat" onClick={() => this.props.zmenScenu('produktPage', 0)}><i class="fas fa-arrow-left"></i> Späť </button>
+                <button className="naspat" onClick={() => this.props.zmenScenu('produktPage', 0)}><i className="fas fa-arrow-left"></i> Späť </button>
                 <div className="kosik">
                     {this.kosik.map(produkt => (
                         <KosikProdukt

@@ -21,7 +21,7 @@ function ThankYouPage(props) {
 
     return (
         <React.StrictMode>
-            <button className="naspat" onClick={() => props.zmenScenu('produktPage')}><i class="fas fa-arrow-left"></i> Späť </button>
+            <button className="naspat" onClick={() => props.zmenScenu('produktPage')}><i className="fas fa-arrow-left"></i> Späť </button>
             <div className="podakovanie">Ďakujeme za Váš nákup</div>
             <div className="objednavka">
                 <div className="text-objednavka">Číslo Vašej objednávky je&nbsp;</div>

@@ -19,12 +19,12 @@ function Produkt(props) {
                         setPocet(pocet - 1);
                         props.odoberZKosika(produkt)
                     }
-                }}>-</button >
+                }}><i className="fas fa-minus"></i></button >
                 <div className="pocet-kosik">{pocet.toString()}</div>
                 <button className="plus-kosik tlacitko-kosik" onClick={() => {
                     setPocet(pocet + 1);
                     props.pridajDoKosika(produkt);
-                }}>+</button>
+                }}><i className="fas fa-plus"></i></button>
             </div>
         </div >
     )
