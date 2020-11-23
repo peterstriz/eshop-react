@@ -7,6 +7,7 @@ var databaza =
   + ' DROP TABLE IF EXISTS `kosik`;'
   + ' CREATE TABLE `kosik` ('
   + '   `id` int unsigned NOT NULL AUTO_INCREMENT,'
+  + '   `pocet_produktov` int unsigned NOT NULL,'
   + '   `produkt_id` int unsigned NOT NULL,'
   + '   `objednavka_id` int unsigned NOT NULL,'
   + '   PRIMARY KEY (`id`),'
@@ -46,3 +47,6 @@ var databaza =
   + '   `psc` int NOT NULL,'
   + '   PRIMARY KEY (`id`)'
   + ' ) ENGINE=InnoDB DEFAULT CHARSET=utf8;'
+
+  + ' INSERT INTO `zakaznik` (`id`, `meno`, `ulica`, `cislo`, `mesto`, `psc`) VALUES'
+  + ' (1,	\'admin\',	\'Iklovicova\',	2,	\'BA\',	12345);'

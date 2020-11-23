@@ -26,6 +26,7 @@ function App(props) {
         if (nazovSceny === 'thankYouPage') {
             return <ThankYouPage
                 zmenScenu={function (nazovSceny, options) { zmenScenu(nazovSceny, options) }}
+                objednavka_id={options.objednavka_id}
             />
         }
         if (nazovSceny === 'adminPage') {
@@ -42,7 +43,7 @@ function App(props) {
 
 
     const [scena, setScena] = useState(vratScenu('produktPage'));
-
+    // const [scena, setScena] = useState(vratScenu('thankYouPage', { objednavka_id: 12000 }));
 
     return (
         <React.StrictMode>

@@ -31,7 +31,8 @@ function ProduktPage(props) {
 
     return (
         <React.StrictMode>
-            <button onClick={() => props.zmenScenu('orderPage', { kosik: kosik })}> Kúpiť </button>
+            <button className="kupit" onClick={() => props.zmenScenu('orderPage', { kosik: kosik })}><i class="fas fa-shopping-cart"></i> Kúpiť </button>
+
             <Produkty
                 pridajDoKosika={function (produkt) { pridajDoKosika(produkt) }}
                 odoberZKosika={function (produkt) { odoberZKosika(produkt) }}

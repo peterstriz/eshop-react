@@ -1,0 +1,48 @@
+
+.reklama-banner {
+  margin: 3px;
+  border-radius: 3px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: rgb(255, 255, 255);
+  max-width: 300px;
+  padding: 3px;
+}
+ 
+.reklama-img{
+  width: 100%;
+}
+
+.reklama-text {
+  font-weight: 100;
+  font-size: x-small;
+  align-self: flex-start;
+}
+
+.podakovanie {
+  font-weight: 800;
+  font-size: xxx-large;
+}
+
+.objednavka {
+  font-weight: 800;
+  font-size: x-large;
+  display: flex;
+  color: rgb(10, 117, 42)
+}
+
+.cislo-objednavka{
+  font-weight: bold;
+  color: rgb(10, 80, 31)
+}
+
+#root {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.naspat {
+  align-self: flex-start;
+}

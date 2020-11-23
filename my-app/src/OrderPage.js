@@ -67,14 +67,8 @@ class OrderPage extends React.Component {
             params: {
                 meno: this.state.meno
             }
-        }).then(function (response) {
-            if (response.data.existuje) {
-                alert('Meno sa už používa niekým iným.');
-                return;
-            }
-
-
-        }).catch(function (error) {
+        }).then(response => this.vytvorObjednavkuSql(response)
+        ).catch(function (error) {
             console.log(error);
         })/*.then(function () {
             // always executed
@@ -84,10 +78,46 @@ class OrderPage extends React.Component {
         // this.props.zmenScenu('thankYouPage', 0)
     }
 
+    vytvorObjednavkuSql(response) {
+        if (response.data.existuje) {
+            alert('Meno sa už používa niekým iným.');
+            return;
+        }
+
+        var parametre = this.state;
+        parametre.kosik = [];
+
+        this.kosik.forEach(produkt => {
+            parametre.kosik.push({
+                id: produkt.id,
+                pocet: produkt.pocet
+            })
+        });
+
+
+
+        console.log('obj...');
+        axios.get('http://localhost:8081/objednavka', {
+            params: JSON.stringify(parametre)
+        }).then(response => this.ukoncenaObjednavka(response)
+        ).catch(function (error) {
+            console.log(error);
+        })
+    }
+
+    ukoncenaObjednavka(response) {
+        console.log(response.data);
+        if (response.data.status && response.data.status === 'ok') {
+            this.props.zmenScenu('thankYouPage', { objednavka_id: response.data.objednavka_id });
+        } else {
+            alert('vyskytla sa chyba pri vytvarani objednavky');
+        }
+    }
+
     render() {
         return (
             <React.StrictMode>
-                <button onClick={() => this.props.zmenScenu('produktPage', 0)}> Späť </button>
+                <button className="naspat" onClick={() => this.props.zmenScenu('produktPage', 0)}><i class="fas fa-arrow-left"></i> Späť </button>
                 <div className="kosik">
                     {this.kosik.map(produkt => (
                         <KosikProdukt
