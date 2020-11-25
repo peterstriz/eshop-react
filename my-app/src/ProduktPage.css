@@ -49,13 +49,14 @@
   border-width: 0px;
   border-radius: 3px;
   height: 40px;
-  width: 100px;
+  width: 250px;
   font-size: large;
   font-weight: bold;
 
   margin: 3px;
   margin-right: 3%;
   align-self: flex-end;
+  cursor: pointer;
 }
 
 

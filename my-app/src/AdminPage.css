@@ -7,5 +7,12 @@
     border-radius: 3px;
 }
 
+.tabulka-objednavka {
+    margin: 5px;
+    padding: 5px;
+    background-color: #FFF;
+    border-radius: 3px;
+}
+
 
 tr:nth-child(odd) {background: rgb(241, 241, 241)};

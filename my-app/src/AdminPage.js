@@ -81,7 +81,20 @@ function AdminPage(props) {
                     {zobrazReklamy()}
                 </tbody>
             </table>
-            {zobrazObjednavky()}
+
+            <table className="tabulka-objednavka">
+                <thead>
+                    <tr>
+                        <th>Číslo objednávky</th>
+                        <th>Meno</th>
+                        <th>Suma</th>
+                        <th>Stav</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {zobrazObjednavky()}
+                </tbody>
+            </table>
 
         </React.StrictMode>
     )

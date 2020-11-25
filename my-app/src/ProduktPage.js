@@ -31,7 +31,7 @@ function ProduktPage(props) {
 
     return (
         <React.StrictMode>
-            <button className="kupit" onClick={() => props.zmenScenu('orderPage', { kosik: kosik })}><i className="fas fa-shopping-cart"></i> Kúpiť </button>
+            <button className="kupit" onClick={() => props.zmenScenu('orderPage', { kosik: kosik })}><i className="fas fa-shopping-cart"></i> Pokračovať do košíka </button>
 
             <Produkty
                 pridajDoKosika={function (produkt) { pridajDoKosika(produkt) }}

@@ -4,50 +4,101 @@ const { response } = require('express');
 
 const app = express();
 
-
-var polozky = [{
-    'nazov': 'Jahoda',
-    'cena': 1.09,
-    'obrazok': 'https://image.shutterstock.com/image-photo/strawberry-ice-cream-ball-isolated-600w-510947623.jpg'
-}, {
-    'nazov': 'Čokoláda',
-    'cena': 0.99,
-    'obrazok': 'https://image.shutterstock.com/image-photo/chocolate-ice-cream-scoop-top-600w-131524841.jpg'
-
-}, {
-    'nazov': 'Mango',
-    'cena': 1.49,
-    'obrazok': 'https://image.shutterstock.com/image-photo/close-on-scoop-tasty-orange-600w-595746428.jpg'
-}, {
-    'nazov': 'Extra poleva',
-    'cena': 0.44,
-    'obrazok': 'https://image.shutterstock.com/image-photo/melted-dark-chocolate-swirl-background-600w-1655863732.jpg'
-}
-]
-
-var reklama = [{
-    'nazov': 'FIIT',
-    'obrazok': 'https://www.fiit.stuba.sk/buxus/images/top_banner/banner_fiit_3.jpg',
-    'url': 'https://www.fiit.stuba.sk/'
-}, {
-    'nazov': 'FEI',
-    'obrazok': 'https://www.fei.stuba.sk/buxus/images/top_banner/image_5539_57_v1.gif',
-    'url': 'https://www.fei.stuba.sk/'
-}
-]
+const nazovDatabazy = 'eshop';
 
 function vytvorenieDatabazy() {
-    var query = 'DROP DATABASE IF EXISTS eshop;';
-    var query2 = 'CREATE DATABASE IF NOT EXISTS eshop ;';
+    connection.connect();
+    // var query = 'DROP DATABASE IF EXISTS eshop;';
 
-    connection.query(query2, function (error, results, fields) {
-        if (error) throw error;
+    var sql = 'SHOW DATABASES LIKE \'' + nazovDatabazy + '\';'
+
+    // var query2 = 'CREATE DATABASE IF NOT EXISTS eshop ;';
+
+    connection.query(sql, function (error, results, fields) {
         console.log('Vytvorenie databazy');
         console.log(results);
+        console.log(error);
+
+        // if (error.sqlMessage === "Unknown database 'eshop'") {
+        if (results.length == 0) {
+            console.log('Treba vytvorit DB...');
+
+            var vytvorQuery = 'CREATE DATABASE ' + nazovDatabazy + ';';
+            connection.query(vytvorQuery, function (error, results, fields) {
+                console.log('DB vytvorena');
+
+                if (error) throw error;
+
+                connection.end();
+
+                connection = mysql.createConnection({
+                    host: 'mydb',
+                    user: 'root',
+                    password: 'root',
+                    database: nazovDatabazy,
+                    multipleStatements: true
+                });
+
+                connection.connect();
+
+                console.log('Pripojeny na DB');
+
+                console.log('Vytvaram tabulky...');
+                connection.query(databazaCreate, function (error, results, fields) {
+                    console.log(results);
+                    console.log(error);
+                    console.log('Tabulky vytvorene');
+
+
+                    seedovanieProdukt();
+                    seedovanieReklama();
+                });
+
+
+            });
+
+
+
+
+        } else if (error) {
+            throw error;
+        }
+        else {
+            connection.end();
+
+            connection = mysql.createConnection({
+                host: 'mydb',
+                user: 'root',
+                password: 'root',
+                database: nazovDatabazy,
+                multipleStatements: true
+            });
+
+            connection.connect();
+        }
+
+
+
+
+
+
+        //seedovanieProdukt();
+        // seedovanieReklama();
     });
 
 }
 
+
+/*OkPacket {
+    my_nodejs_1  |   fieldCount: 0,
+    my_nodejs_1  |   affectedRows: 1,
+    my_nodejs_1  |   insertId: 0,
+    my_nodejs_1  |   serverStatus: 2,
+    my_nodejs_1  |   warningCount: 1,
+    my_nodejs_1  |   message: '',
+    my_nodejs_1  |   protocol41: true,
+    my_nodejs_1  |   changedRows: 0
+    my_nodejs_1  | }*/
 
 function seedovanieProdukt() {
     var query = 'INSERT INTO produkt (nazov, cena, obrazok) VALUES '
@@ -86,7 +137,6 @@ var connection = mysql.createConnection({
     host: 'mydb',
     user: 'root',
     password: 'root',
-    database: 'eshop',
     multipleStatements: true
 });
 
@@ -147,6 +197,25 @@ app.get('/pocitadlo', (req, res) => {
     connection.query(query, function (error, results, fields) {
         if (error) throw error;
         res.json({ ok: 'klik registrovany' });
+    });
+});
+
+app.get('/spracujObjednavku', (req, res) => {
+    res.header({ "Access-Control-Allow-Origin": "*" });
+
+    console.log("requested update stav objednavky");
+
+
+    var query = 'UPDATE objednavka SET stav = \'spracovana\' WHERE id= \'' + req.query.id + '\';'
+
+    connection.query(query, function (error, results, fields) {
+        if (error) throw error;
+        console.log(results);
+
+        if (results.changedRows >= 1)
+            res.json({ stav: 'spracovana' });
+        else
+            res.json({ stav: 'fail' });
     });
 });
 
@@ -270,20 +339,122 @@ app.get('/objednavka', (req, res) => {
 app.listen(8081, () => {
 
 
-    console.log('Waiting for database init... (5 sec)');
-    // setTimeout(function () { 
-    connection.connect();// }, 5000);
+    // console.log('Waiting for database init... (5 sec)');
     console.log('Server listening...');
 
 
 
-
-    seedovanieProdukt();
-    seedovanieReklama();
-
     vytvorenieDatabazy();
+
 });
 
 
 
 
+
+
+var databazaCreate =
+    'SET NAMES utf8; '
+    + ' SET time_zone = \'+00:00\'; '
+    + ' SET foreign_key_checks = 0; '
+    + ' SET sql_mode = \'NO_AUTO_VALUE_ON_ZERO\'; '
+
+    + ' DROP TABLE IF EXISTS `kosik`;'
+    + ' CREATE TABLE `kosik` ('
+    + '   `id` int unsigned NOT NULL AUTO_INCREMENT,'
+    + '   `pocet_produktov` int unsigned NOT NULL,'
+    + '   `produkt_id` int unsigned NOT NULL,'
+    + '   `objednavka_id` int unsigned NOT NULL,'
+    + '   PRIMARY KEY (`id`),'
+    + '   KEY `produkt_id` (`produkt_id`),'
+    + '   KEY `objednavka_id` (`objednavka_id`),'
+    + '   CONSTRAINT `kosik_ibfk_1` FOREIGN KEY (`produkt_id`) REFERENCES `produkt` (`id`),'
+    + '   CONSTRAINT `kosik_ibfk_2` FOREIGN KEY (`objednavka_id`) REFERENCES `objednavka` (`id`)'
+    + ' ) ENGINE=InnoDB DEFAULT CHARSET=utf8;'
+
+
+    + ' DROP TABLE IF EXISTS `objednavka`;'
+    + ' CREATE TABLE `objednavka` ('
+    + '   `id` int unsigned NOT NULL AUTO_INCREMENT,'
+    + '   `zakaznik_id` int unsigned NOT NULL,'
+    + '   `stav` varchar(10) NOT NULL,'
+    + '   PRIMARY KEY (`id`),'
+    + '   KEY `zakaznik_id` (`zakaznik_id`),'
+    + '   CONSTRAINT `objednavka_ibfk_1` FOREIGN KEY (`zakaznik_id`) REFERENCES `zakaznik` (`id`)'
+    + ' ) ENGINE=InnoDB DEFAULT CHARSET=utf8;'
+
+
+    + ' DROP TABLE IF EXISTS `produkt`;'
+    + ' CREATE TABLE `produkt` ('
+    + '   `id` int unsigned NOT NULL AUTO_INCREMENT,'
+    + '   `nazov` varchar(30) NOT NULL,'
+    + '   `obrazok` tinytext NOT NULL,'
+    + '   `cena` double NOT NULL,'
+    + '   PRIMARY KEY (`id`)'
+    + ' ) ENGINE=InnoDB DEFAULT CHARSET=utf8;'
+
+    + ' DROP TABLE IF EXISTS `reklama`;'
+    + ' CREATE TABLE `reklama` ('
+    + '   `id` int unsigned NOT NULL AUTO_INCREMENT,'
+    + '   `pocet_klikov` int unsigned NOT NULL DEFAULT \'0\','
+    + '   `nazov` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,'
+    + '   `url` tinytext CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,'
+    + '   `obrazok` tinytext NOT NULL,'
+    + '   PRIMARY KEY (`id`)'
+    + ' ) ENGINE=InnoDB DEFAULT CHARSET=utf8;'
+
+
+    + ' DROP TABLE IF EXISTS `zakaznik`;'
+    + ' CREATE TABLE `zakaznik` ('
+    + '   `id` int unsigned NOT NULL AUTO_INCREMENT,'
+    + '   `meno` varchar(50) NOT NULL,'
+    + '   `ulica` varchar(40) NOT NULL,'
+    + '   `cislo` int NOT NULL,'
+    + '   `mesto` varchar(30) NOT NULL,'
+    + '   `psc` int NOT NULL,'
+    + '   PRIMARY KEY (`id`)'
+    + ' ) ENGINE=InnoDB DEFAULT CHARSET=utf8;'
+
+    + ' INSERT INTO `zakaznik` (`id`, `meno`, `ulica`, `cislo`, `mesto`, `psc`) VALUES'
+    + ' (1,	\'admin\',	\'Iklovicova\',	2,	\'BA\',	12345);'
+
+
+
+var polozky = [{
+    'nazov': 'Jahoda',
+    'cena': 1.09,
+    'obrazok': 'https://image.shutterstock.com/image-photo/strawberry-ice-cream-ball-isolated-600w-510947623.jpg'
+}, {
+    'nazov': 'Čučoriadka',
+    'cena': 1.19,
+    'obrazok': 'https://image.shutterstock.com/image-photo/single-blueberry-ice-cream-scoop-600w-203261278.jpg'
+}, {
+    'nazov': 'Stracciatella',
+    'cena': 0.99,
+    'obrazok': 'https://image.shutterstock.com/image-photo/speciality-italian-stracciatella-ice-cream-600w-599396960.jpg'
+}, {
+    'nazov': 'Čokoláda',
+    'cena': 0.99,
+    'obrazok': 'https://image.shutterstock.com/image-photo/chocolate-ice-cream-scoop-top-600w-131524841.jpg'
+
+}, {
+    'nazov': 'Mango',
+    'cena': 1.49,
+    'obrazok': 'https://image.shutterstock.com/image-photo/close-on-scoop-tasty-orange-600w-595746428.jpg'
+}, {
+    'nazov': 'Extra poleva',
+    'cena': 0.44,
+    'obrazok': 'https://image.shutterstock.com/image-photo/melted-dark-chocolate-swirl-background-600w-1655863732.jpg'
+}
+]
+
+var reklama = [{
+    'nazov': 'FIIT',
+    'obrazok': 'https://www.fiit.stuba.sk/buxus/images/top_banner/banner_fiit_3.jpg',
+    'url': 'https://www.fiit.stuba.sk/'
+}, {
+    'nazov': 'FEI',
+    'obrazok': 'https://www.fei.stuba.sk/buxus/images/top_banner/image_5539_57_v1.gif',
+    'url': 'https://www.fei.stuba.sk/'
+}
+]
