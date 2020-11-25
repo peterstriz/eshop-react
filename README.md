@@ -1,4 +1,4 @@
-﻿# Eshop VAJVS
+# Eshop VAJVS - Peter Stríž
 
 Node server:  ```http://localhost:8081/```
 
@@ -13,10 +13,19 @@ React server: ```http://localhost:3000/```
 
 ## Spustenie
 
+Treba použiť dve konzoly naraz, lebo jedna ovláda server a docker, zatiaľ čo druhá react
+
+Príkazy môžeme spúšťať súbežne
+
+1. Konzola
 ```
 docker-compose build
 docker-compose up
-docker-compose up my_nodejs
+(počkať pokiaľ sa načíta mysql databáza -> zrušiť CTRL+C)
+docker-compose up 
+```
+2. Konzola
+```
 cd ./my-app/
 npm install
 npm start
