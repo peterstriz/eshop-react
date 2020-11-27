@@ -1,25 +1,27 @@
 const mysql = require('mysql');
 const express = require('express');
-const { response } = require('express');
 
 const app = express();
 
 const nazovDatabazy = 'eshop';
 
+var connection = mysql.createConnection({
+    host: 'mydb',
+    user: 'root',
+    password: 'root',
+    multipleStatements: true
+});
+
+
 function vytvorenieDatabazy() {
     connection.connect();
-    // var query = 'DROP DATABASE IF EXISTS eshop;';
-
     var sql = 'SHOW DATABASES LIKE \'' + nazovDatabazy + '\';'
-
-    // var query2 = 'CREATE DATABASE IF NOT EXISTS eshop ;';
 
     connection.query(sql, function (error, results, fields) {
         console.log('Vytvorenie databazy');
         console.log(results);
         console.log(error);
 
-        // if (error.sqlMessage === "Unknown database 'eshop'") {
         if (results.length == 0) {
             console.log('Treba vytvorit DB...');
 
@@ -58,9 +60,8 @@ function vytvorenieDatabazy() {
             });
 
 
-
-
-        } else if (error) {
+        }
+        else if (error) {
             throw error;
         }
         else {
@@ -77,28 +78,9 @@ function vytvorenieDatabazy() {
             connection.connect();
         }
 
-
-
-
-
-
-        //seedovanieProdukt();
-        // seedovanieReklama();
     });
 
 }
-
-
-/*OkPacket {
-    my_nodejs_1  |   fieldCount: 0,
-    my_nodejs_1  |   affectedRows: 1,
-    my_nodejs_1  |   insertId: 0,
-    my_nodejs_1  |   serverStatus: 2,
-    my_nodejs_1  |   warningCount: 1,
-    my_nodejs_1  |   message: '',
-    my_nodejs_1  |   protocol41: true,
-    my_nodejs_1  |   changedRows: 0
-    my_nodejs_1  | }*/
 
 function seedovanieProdukt() {
     var query = 'INSERT INTO produkt (nazov, cena, obrazok) VALUES '
@@ -130,15 +112,6 @@ function seedovanieReklama() {
         console.log('Seed reklama uspesny');
     });
 }
-
-
-
-var connection = mysql.createConnection({
-    host: 'mydb',
-    user: 'root',
-    password: 'root',
-    multipleStatements: true
-});
 
 
 app.get('/produkty', (req, res) => {
@@ -185,7 +158,6 @@ app.get('/objednavky', (req, res) => {
     });
 });
 
-
 app.get('/pocitadlo', (req, res) => {
     res.header({ "Access-Control-Allow-Origin": "*" });
 
@@ -219,7 +191,6 @@ app.get('/spracujObjednavku', (req, res) => {
     });
 });
 
-
 app.get('/reklama', (req, res) => {
     res.header({ "Access-Control-Allow-Origin": "*" });
 
@@ -234,7 +205,6 @@ app.get('/reklama', (req, res) => {
         res.json(reklama);
     });
 });
-
 
 app.get('/existuje', (req, res) => {
     res.header({ "Access-Control-Allow-Origin": "*" });
@@ -337,19 +307,10 @@ app.get('/objednavka', (req, res) => {
 
 
 app.listen(8081, () => {
-
-
-    // console.log('Waiting for database init... (5 sec)');
     console.log('Server listening...');
 
-
-
     vytvorenieDatabazy();
-
 });
-
-
-
 
 
 

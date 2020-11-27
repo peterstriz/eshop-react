@@ -18,16 +18,23 @@ function Produkty(props) {
     fetchData();
   }, []);
 
+  function zobrazProdukty() {
+    if (produkty.length == 0)
+      return <div>ERROR: Uistite sa že node.js server je zapnutý</div>
+
+    return produkty.map(produkt => (
+      <Produkt
+        key={produkt.id}
+        udaje={produkt}
+        pridajDoKosika={function (produkt) { props.pridajDoKosika(produkt) }}
+        odoberZKosika={function (produkt) { props.odoberZKosika(produkt) }}
+      />
+    ))
+  }
+
   return (
     <div className="produkty">
-      {produkty.map(produkt => (
-        <Produkt
-          key={produkt.id}
-          udaje={produkt}
-          pridajDoKosika={function (produkt) { props.pridajDoKosika(produkt) }}
-          odoberZKosika={function (produkt) { props.odoberZKosika(produkt) }}
-        />
-      ))}
+      {zobrazProdukty()}
 
     </div>
   );
