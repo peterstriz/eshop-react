@@ -1,6 +1,8 @@
 const assert = require('assert');
 const axios = require('axios');
 
+const teraz = Date.now();
+
 describe("Get produkt - Jahoda", function () {
     const ocakavanaOdpoved = {
         nazov: 'Jahoda',
@@ -10,7 +12,7 @@ describe("Get produkt - Jahoda", function () {
 
     var jahoda = {};
 
-    beforeEach(async () => {
+    before(async () => {
         return result = await axios('http://localhost:8081/produkty')
             .then(function (response) {
                 response.data.forEach(produkt => {
@@ -24,7 +26,7 @@ describe("Get produkt - Jahoda", function () {
             });
     });
 
-    it('Nazov', () => {
+    it('Názov', () => {
         assert.equal(jahoda.nazov, ocakavanaOdpoved.nazov);
     })
 
@@ -32,16 +34,14 @@ describe("Get produkt - Jahoda", function () {
         assert.equal(jahoda.cena, ocakavanaOdpoved.cena);
     })
 
-    it('Obrazok', () => {
+    it('Obrázok', () => {
         assert.equal(jahoda.obrazok, ocakavanaOdpoved.obrazok);
     })
 });
 
-
-describe("Vytvor objednavku - jeden produkt", function () {
-
+describe("Vytvor objednávku - jeden produkt", function () {
     const parametre = {
-        meno: 'Peter Stríž',
+        meno: 'Test vytvor objednavku - jeden produkt (' + teraz + ')',
         mesto: 'Bratislava',
         cisloDomu: '2',
         psc: '12345',
@@ -54,7 +54,7 @@ describe("Vytvor objednavku - jeden produkt", function () {
 
     var response = {};
 
-    beforeEach(async () => {
+    before(async () => {
         return result = await axios.get('http://localhost:8081/objednavka', {
             params: JSON.stringify(parametre)
         }).then(function (res) {
@@ -68,15 +68,15 @@ describe("Vytvor objednavku - jeden produkt", function () {
         assert.notStrictEqual(response.data, undefined);
     })
 
-    it('Vytvorena', () => {
+    it('Vytvorená', () => {
         assert.equal(response.data.status, 'ok');
     })
 
 });
 
-describe("Vytvor objednavku - viac produktov", function () {
+describe("Vytvor objednávku - viac produktov", function () {
     const parametre = {
-        meno: 'Peter Stríž',
+        meno: 'Test vytvor objednavku - viac produktov (' + teraz + ')',
         mesto: 'Bratislava',
         cisloDomu: '2',
         psc: '12345',
@@ -97,7 +97,7 @@ describe("Vytvor objednavku - viac produktov", function () {
 
     var response = {};
 
-    beforeEach(async () => {
+    before(async () => {
         return result = await axios.get('http://localhost:8081/objednavka', {
             params: JSON.stringify(parametre)
         }).then(function (res) {
@@ -111,41 +111,15 @@ describe("Vytvor objednavku - viac produktov", function () {
         assert.notStrictEqual(response.data, undefined);
     })
 
-    it('Vytvorena', () => {
+    it('Vytvorená', () => {
         assert.equal(response.data.status, 'ok');
     })
 
 });
 
-    // describe('Jahoda', function () {
-    //     it('id', function () {
-    //         assert.equal(jahoda.id, ocakavanaOdpoved.id);
-    //     })
-    // })
-
-
-
-    // if ({
-    //     cena: 1.09,
-    //     id: 1,
-    //     nazov: 'Jahoda',
-    //     obrazok: 'https://image.shutterstock.com/image-photo/strawberry-ice-cream-ball-isolated-600w-510947623.jpg'
-    // } == {
-    //     cena: 1.09,
-    //     id: 1,
-    //     nazov: 'Jahoda',
-    //     obrazok: 'https://image.shutterstock.com/image-photo/strawberry-ice-cream-ball-isolated-600w-510947623.jpg'
-    // })
-    //     console.log('wtf1');
-    // else
-    //     console.log('wtf2');
-
-    // console.log(result.data);
-
-
-/*it('Vytvor objednavku', function () {
-    var parametre = {
-        meno: 'Peter Stríž',
+describe("Test duplikát zákazníka", function () {
+    const parametre = {
+        meno: 'Test duplikát zákazníka (' + teraz + ')',
         mesto: 'Bratislava',
         cisloDomu: '2',
         psc: '12345',
@@ -157,17 +131,49 @@ describe("Vytvor objednavku - viac produktov", function () {
         {
             pocet: 4,
             id: 2
+        },
+        {
+            pocet: 10,
+            id: 3
         }]
     };
 
 
-    axios.get('http://localhost:8081/objednavka', {
-        params: JSON.stringify(parametre)
-    }).then(function (response) {
-        console.log(response);
-    }).catch(function (error) {
-        console.log(error);
+    it('Zákazník ešte nexistuje', async () => {
+        return result = await axios.get('http://localhost:8081/existuje', {
+            params: {
+                meno: parametre.meno
+            }
+        }).then(function (res) {
+            assert.equal(res.data.existuje.toString(), false.toString());
+        }).catch(function (error) {
+            console.log(error);
+        })
     })
-});*/
 
 
+
+    it('Objednávka vytvorená', async () => {
+        return result = await axios.get('http://localhost:8081/objednavka', {
+            params: JSON.stringify(parametre)
+        }).then(function (res) {
+            assert.equal(res.data.status, 'ok');
+        }).catch(function (error) {
+            console.log(error);
+        })
+
+    })
+
+    it('Zákazník už existuje', async () => {
+        return result = await axios.get('http://localhost:8081/existuje', {
+            params: {
+                meno: parametre.meno
+            }
+        }).then(function (res) {
+            assert.equal(res.data.existuje.toString(), true.toString());
+        }).catch(function (error) {
+            console.log(error);
+        })
+    })
+
+});
