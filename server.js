@@ -5,21 +5,15 @@ const app = express();
 
 const nazovDatabazy = 'eshop';
 
-var connection = mysql.createConnection({
-    host: 'mydb',
-    user: 'root',
-    password: 'root',
-    multipleStatements: true
-});
+var connection = {};
 
 
 function vytvorenieDatabazy() {
-    connection.connect();
     var sql = 'SHOW DATABASES LIKE \'' + nazovDatabazy + '\';'
 
     connection.query(sql, function (error, results, fields) {
-        console.log('Vytvorenie databazy');
-        console.log(results);
+        // console.log('Vytvorenie databazy');
+        // console.log(results);
         console.log(error);
 
         if (results.length == 0) {
@@ -76,6 +70,7 @@ function vytvorenieDatabazy() {
             });
 
             connection.connect();
+            console.log('Pripojeny na databazu... eshop');
         }
 
     });
@@ -239,16 +234,18 @@ app.get('/objednavka', (req, res) => {
             'VALUES (\'' + objednavka.meno + '\', \'' + objednavka.ulica + '\', \'' + objednavka.cisloDomu + '\', \'' + objednavka.mesto + '\', \'' + objednavka.psc + '\'); ';
         connection.query(sql, function (err, result) {
             if (err) {
-                res.json({ fail: err });
-                connection.rollback(function () {
-                    throw err;
-                });
+                if (err.code != 'ER_DUP_ENTRY') {
+                    res.json({ fail: err });
+                    connection.rollback(function () {
+                        throw err;
+                    });
+                }
             }
-            var zakaznik_id = result.insertId;
+            // var zakaznik_id = result.insertId;
 
             console.log('vytvoreny zakaznik');
 
-            sql = 'INSERT INTO objednavka (zakaznik_id, stav) VALUES (\'' + zakaznik_id + '\', \'vytvorena\'); ';
+            sql = 'INSERT INTO objednavka (zakaznik_id, stav) VALUES ((SELECT id FROM zakaznik WHERE meno=\'' + objednavka.meno + '\'), \'vytvorena\'); ';
             connection.query(sql, function (err, result) {
                 if (err) {
                     res.json({ fail: err });
@@ -309,8 +306,41 @@ app.get('/objednavka', (req, res) => {
 app.listen(8081, () => {
     console.log('Server listening...');
 
-    vytvorenieDatabazy();
+
+
+
+    spojSaSDatabazou(() => {
+        vytvorenieDatabazy();
+    });
+
+
 });
+
+function spojSaSDatabazou(callback) {
+
+    connection = mysql.createConnection({
+        host: 'mydb',
+        user: 'root',
+        password: 'root',
+        multipleStatements: true
+    });
+
+    connection.connect(err => {
+        if (err) {
+            console.log("Databaza nebola najdena, skusim o 20 sekund...");
+            connection.end(err => {
+                console.log("Zrusit spojenie sa nepodarilo!");
+            });
+            setTimeout(() => {
+                spojSaSDatabazou(callback);
+            }, 20000);
+        }
+        else {
+            console.log("Spojenie s databazou nadviazane");
+            callback();
+        }
+    });
+}
 
 
 
@@ -375,6 +405,8 @@ var databazaCreate =
     + '   `psc` int NOT NULL,'
     + '   PRIMARY KEY (`id`)'
     + ' ) ENGINE=InnoDB DEFAULT CHARSET=utf8;'
+
+    + 'ALTER TABLE `zakaznik` ADD UNIQUE (`meno`);'
 
     + ' INSERT INTO `zakaznik` (`id`, `meno`, `ulica`, `cislo`, `mesto`, `psc`) VALUES'
     + ' (1,	\'admin\',	\'Iklovičova\',	2,	\'BA\',	12345);'

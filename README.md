@@ -12,7 +12,7 @@ Názov databázy: ```eshop```
 
 ## Admin
 
-Ak chceme ísť do admin módu, musíme zadať: ```http://localhost:3000/#admin```
+Ak chceme ísť na admin stánku, musíme zadať: ```http://localhost:3000/#admin``` (niekedy je potrebné adresu zavolať dvakrát)
 
 ## Spustenie
 
@@ -24,7 +24,7 @@ Príkazy môžeme spúšťať súbežne
 ```
 docker-compose build
 docker-compose up
-(počkať pokiaľ sa načíta mysql databáza -> zrušiť CTRL+C)
+(ak náhodou node server padne tak treba znovu zadať)
 docker-compose up 
 ```
 2. Konzola - *React*

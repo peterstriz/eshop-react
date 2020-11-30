@@ -81,20 +81,10 @@ class OrderPage extends React.Component {
         }).then(response => this.vytvorObjednavkuSql(response)
         ).catch(function (error) {
             console.log(error);
-        })/*.then(function () {
-            // always executed
-        });*/
-
-
-        // this.props.zmenScenu('thankYouPage', 0)
+        })
     }
 
     vytvorObjednavkuSql(response) {
-        if (response.data.existuje) {
-            alert('Meno sa už používa niekým iným.');
-            return;
-        }
-
         var parametre = this.state;
         parametre.kosik = [];
 
