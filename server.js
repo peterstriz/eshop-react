@@ -14,7 +14,8 @@ function vytvorenieDatabazy() {
     connection.query(sql, function (error, results, fields) {
         // console.log('Vytvorenie databazy');
         // console.log(results);
-        console.log(error);
+        if (error)
+            console.log(error);
 
         if (results.length == 0) {
             console.log('Treba vytvorit DB...');
@@ -302,19 +303,16 @@ app.get('/objednavka', (req, res) => {
 });
 
 
+spojSaSDatabazou(() => {
+    vytvorenieDatabazy();
 
-app.listen(8081, () => {
-    console.log('Server listening...');
-
-
-
-
-    spojSaSDatabazou(() => {
-        vytvorenieDatabazy();
+    app.listen(8081, () => {
+        console.log('Server listening...');
     });
 
-
 });
+
+
 
 function spojSaSDatabazou(callback) {
 
