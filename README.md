@@ -39,6 +39,14 @@ npm start
 V root priečinku stačí spustiť:
 
 ```
+npm install 
+npm test
+```
+
+**ALEBO**
+
+Ak sme priamo v docker containeri, tak stačí iba:
+```
 npm test
 ```
 
