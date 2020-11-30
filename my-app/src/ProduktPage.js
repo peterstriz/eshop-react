@@ -38,7 +38,7 @@ function ProduktPage(props) {
                 odoberZKosika={function (produkt) { odoberZKosika(produkt) }}
             />
 
-            <button className="admin" onClick={() => props.zmenScenu('adminPage', 0)}><i className="fas fa-user-lock"></i> Admin</button>
+            {/* <button className="admin" onClick={() => props.zmenScenu('adminPage', 0)}><i className="fas fa-user-lock"></i> Admin</button> */}
 
         </React.StrictMode >
     )

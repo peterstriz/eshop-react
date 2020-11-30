@@ -377,7 +377,7 @@ var databazaCreate =
     + ' ) ENGINE=InnoDB DEFAULT CHARSET=utf8;'
 
     + ' INSERT INTO `zakaznik` (`id`, `meno`, `ulica`, `cislo`, `mesto`, `psc`) VALUES'
-    + ' (1,	\'admin\',	\'Iklovicova\',	2,	\'BA\',	12345);'
+    + ' (1,	\'admin\',	\'Iklovičova\',	2,	\'BA\',	12345);'
 
 
 

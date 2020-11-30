@@ -4,11 +4,13 @@ import OrderPage from './OrderPage';
 import AdminPage from './AdminPage';
 
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 
 
 function App(props) {
+    const [scena, setScena] = useState(vratScenu('produktPage'));
+    const [admin, setAdmin] = useState(false);
 
 
     function vratScenu(nazovSceny, options) {
@@ -42,12 +44,30 @@ function App(props) {
     }
 
 
-    const [scena, setScena] = useState(vratScenu('produktPage'));
-    // const [scena, setScena] = useState(vratScenu('thankYouPage', { objednavka_id: 12000 }));
+    useEffect(() => {
+        let mounted = true;
+
+        if (admin != null &&
+            admin == false &&
+            window.location.hash.substring(1) == 'admin') {
+
+            if (mounted)
+                setAdmin(true);
+
+            if (mounted)
+                var novaScena = vratScenu('adminPage', 0);
+
+            if (mounted)
+                setScena(novaScena);
+        }
+
+        return () => mounted = false;
+
+    });
+
 
     return (
         <React.StrictMode>
-
             {scena}
         </React.StrictMode>
     )

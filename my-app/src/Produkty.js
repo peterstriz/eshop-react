@@ -9,13 +9,19 @@ function Produkty(props) {
 
 
   useEffect(() => {
+    let mounted = true;
+
     const fetchData = async () => {
       const result = await axios('http://localhost:8081/produkty');
 
-      setProdukty(result.data);
+      if (mounted)
+        setProdukty(result.data);
     }
 
+
     fetchData();
+
+    return () => mounted = false;
   }, []);
 
   function zobrazProdukty() {
