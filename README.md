@@ -10,6 +10,9 @@ Názov databázy: ```eshop```
 
 (Treba mať vypnutý adblocker v prehliadači, inak sa niektoré funkcie nemusia zobraziť správne)
 
+## Admin
+
+Ak chceme ísť do admin módu, musíme zadať: ```http://localhost:3000/#admin```
 
 ## Spustenie
 
