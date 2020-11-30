@@ -12,7 +12,7 @@ Názov databázy: ```eshop```
 
 ## Admin
 
-Ak chceme ísť na admin stánku, musíme zadať: ```http://localhost:3000/#admin``` (niekedy je potrebné adresu zavolať dvakrát)
+Ak chceme ísť na admin stánku, musíme zadať: ```http://localhost:3000/#admin``` (je potrebné refreshnúť stránku)
 
 ## Spustenie
 
