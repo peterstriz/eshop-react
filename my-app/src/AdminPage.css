@@ -14,5 +14,40 @@
     border-radius: 3px;
 }
 
+tr:nth-child(odd) {background: rgb(241, 241, 241)}
 
-tr:nth-child(odd) {background: rgb(241, 241, 241)};
+
+.objednavka-riadok-stav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0px 5px 0px 5px;
+}
+
+.vytvorena {
+    background-color: lightsalmon;
+}
+
+.vytvorena:hover {
+    background-color: rgb(250, 138, 93);
+}
+
+.spracovana {
+    background-color: lightseagreen;
+}
+
+
+.spracovana:hover {
+    background-color: rgb(29, 144, 139);
+}
+
+.objednavka-riadok-stav > button {
+    width: 100%;
+    height: 20px;
+    border: 0;
+    border-radius: 3px;  
+    color: white;
+    font-weight: bold;
+
+    cursor: pointer;
+}

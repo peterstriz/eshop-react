@@ -13,7 +13,7 @@ function AdminObjednavka(props) {
     });
 
     function potvrdObjednavku(id, button) {
-        if (button.className === 'spracovana')
+        if (stav === 'spracovana')
             return;
 
 
@@ -21,8 +21,6 @@ function AdminObjednavka(props) {
             params: { id: id }
         }).then(function (response) {
             if (response.data.stav === 'spracovana') {
-                button.className = 'spracovana';
-
                 setStav('spracovana');
             }
         }).catch(function (error) {
@@ -37,7 +35,7 @@ function AdminObjednavka(props) {
                 <td className='objednavka-riadok-meno'>{props.objednavka[0].meno}</td>
                 <td className='objednavka-riadok-url'>{sumaSpolu}</td>
                 <td className='objednavka-riadok-stav'>
-                    <button className='potvrd' onClick={e => potvrdObjednavku(props.objednavka[0].id, e.target)}> {stav} </button>
+                    <button className={stav} onClick={e => potvrdObjednavku(props.objednavka[0].id, e.target)}> {stav} </button>
                 </td>
             </tr>
         </React.StrictMode>
