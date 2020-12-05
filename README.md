@@ -36,7 +36,7 @@ npm start
 
 ## Testy
 
-V root priečinku stačí spustiť:
+Treba mať spustený node server a v root priečinku stačí spustiť:
 
 ```
 npm install 
