@@ -14,6 +14,8 @@ Názov databázy: ```eshop```
 
 Ak chceme ísť na admin stánku, musíme zadať: ```http://localhost:3000/#admin``` (je potrebné refreshnúť stránku)
 
+Obsah objednávky sa zobrazí po nabehnutí myšou nad objednávku
+
 ## Spustenie
 
 Treba použiť dve konzoly naraz, lebo jedna rieši Docker, zatiaľ čo tá druhá React
@@ -24,12 +26,13 @@ Príkazy môžeme spúšťať súbežne
 ```
 docker-compose build
 docker-compose up
-(ak náhodou node server padne tak treba znovu zadať)
+(ak náhodou node server padne - nemal by, tak stači iba znovu zadať)
 docker-compose up 
 ```
 2. Konzola - *React*
 ```
 cd ./my-app/
+(iba pri prvom spustení)
 npm install
 npm start
 ```
