@@ -154,6 +154,22 @@ app.get('/objednavky', (req, res) => {
     });
 });
 
+app.get('/objednavkaById', (req, res) => {
+    res.header({ "Access-Control-Allow-Origin": "*" });
+
+    console.log("requested objednavkaById");
+
+    var query = 'SELECT objednavka_id AS id, pocet_produktov, produkt.nazov, produkt.obrazok, (pocet_produktov * cena) as suma FROM kosik'
+        + ' JOIN produkt ON kosik.produkt_id=produkt.id'
+        + ' WHERE objednavka_id =\'' + req.query.id + '\'';
+
+
+    connection.query(query, function (error, results, fields) {
+        if (error) throw error;
+        res.json(results);
+    });
+});
+
 app.get('/pocitadlo', (req, res) => {
     res.header({ "Access-Control-Allow-Origin": "*" });
 
@@ -416,7 +432,7 @@ var polozky = [{
     'cena': 1.09,
     'obrazok': 'https://image.shutterstock.com/image-photo/strawberry-ice-cream-ball-isolated-600w-510947623.jpg'
 }, {
-    'nazov': 'Čučoriadka',
+    'nazov': 'Čučoriedka',
     'cena': 1.19,
     'obrazok': 'https://image.shutterstock.com/image-photo/single-blueberry-ice-cream-scoop-600w-203261278.jpg'
 }, {

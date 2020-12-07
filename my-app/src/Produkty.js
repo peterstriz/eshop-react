@@ -25,7 +25,7 @@ function Produkty(props) {
   }, []);
 
   function zobrazProdukty() {
-    if (produkty.length == 0)
+    if (produkty.length === 0)
       return <div>ERROR: Uistite sa že node.js server je zapnutý</div>
 
     return produkty.map(produkt => (

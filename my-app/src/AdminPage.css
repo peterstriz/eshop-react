@@ -51,3 +51,14 @@ tr:nth-child(odd) {background: rgb(241, 241, 241)}
 
     cursor: pointer;
 }
+
+.objednavka-detail {
+    background-color:white;
+    box-shadow: 0px 0px 5px 0px rgba(31,31,31,0.2);;
+    padding: 7px;
+    border-radius: 5px;
+}
+
+.objednavka-detail > .kosikProdukt {
+    box-shadow: 0px 0px 2px 0px rgba(31, 31, 31, 0.2);;
+}

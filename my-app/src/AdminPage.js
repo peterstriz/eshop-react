@@ -5,6 +5,7 @@ import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import AdminObjednavka from './AdminObjednavka';
 import AdminReklama from './AdminReklama';
+import AdminObjednavkaOkienko from './AdminObjednavkaOkienko';
 
 
 
@@ -13,6 +14,8 @@ import AdminReklama from './AdminReklama';
 function AdminPage(props) {
     const [objednavky, setObjednavky] = useState([]);
     const [reklamy, setReklamy] = useState([]);
+    const [detaily, setDetaily] = useState([]);
+    const [mousePoz, setMousePoz] = useState({});
 
 
     useEffect(() => {
@@ -40,7 +43,33 @@ function AdminPage(props) {
         fetchReklamy();
     }, []);
 
+    function zobrazDetaily() {
+        if (detaily.length > 0) {
+            return <AdminObjednavkaOkienko
+                objednavky={detaily}
+                mousePoz={mousePoz}
+            />
+        }
+        else
+            return null;
+    }
 
+
+    function zobrazDetail(objednavka) {
+        setDetaily(objednavka);
+
+        document.onmousemove = function (e) {
+            let left1 = parseInt(e.clientX);
+            let top1 = parseInt(e.clientY);
+
+            setMousePoz({ left: left1 + 3, top: top1 + 3 });
+        };
+    }
+
+    function zrusDetail() {
+        setDetaily([]);
+        document.onmousemove = null;
+    }
 
     function zobrazObjednavky() {
         var ret = [];
@@ -50,6 +79,8 @@ function AdminPage(props) {
                 ret.push(<AdminObjednavka
                     key={objednavka[0].id}
                     objednavka={objednavka}
+                    zobrazDetail={function (objednavka) { zobrazDetail(objednavka); }}
+                    zrusDetail={function () { zrusDetail(); }}
                 />)
         })
 
@@ -95,6 +126,8 @@ function AdminPage(props) {
                     {zobrazObjednavky()}
                 </tbody>
             </table>
+
+            {zobrazDetaily()}
 
         </React.StrictMode>
     )

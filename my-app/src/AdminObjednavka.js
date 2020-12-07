@@ -30,11 +30,18 @@ function AdminObjednavka(props) {
 
     return (
         <React.StrictMode>
-            <tr className='objednavka-riadok'>
+            <tr className='objednavka-riadok'
+                onMouseEnter={e => props.zobrazDetail(props.objednavka)}
+                onMouseLeave={e => props.zrusDetail()}
+            >
+
                 <td className='objednavka-riadok-id'>{props.objednavka[0].id}</td>
                 <td className='objednavka-riadok-meno'>{props.objednavka[0].meno}</td>
-                <td className='objednavka-riadok-url'>{sumaSpolu}</td>
-                <td className='objednavka-riadok-stav'>
+                <td className='objednavka-riadok-url'>{Math.round(sumaSpolu * 100) / 100}&euro;</td>
+                <td className='objednavka-riadok-stav'
+                    onMouseEnter={e => props.zrusDetail()}
+                    onMouseLeave={e => props.zobrazDetail(props.objednavka)}
+                >
                     <button className={stav} onClick={e => potvrdObjednavku(props.objednavka[0].id, e.target)}> {stav} </button>
                 </td>
             </tr>
